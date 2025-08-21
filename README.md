@@ -9,7 +9,7 @@ _A Hyprland shell made of bacon._
 
 My idea for now is to make a `quickshell` port of my `waybar`, but I’ve already
 replaced `hyprpaper` with it and plan to do the same with `mako`. Not sure yet
-about rofi.
+about `rofi`.
 
 Currently, it works only on Hyprland, but I might add support for Niri in the
 future.
