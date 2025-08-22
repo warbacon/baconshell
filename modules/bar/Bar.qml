@@ -1,4 +1,5 @@
 import Quickshell
+import Quickshell.Widgets
 import QtQuick
 import QtQuick.Layouts
 import qs.modules.bar.widgets
@@ -23,17 +24,16 @@ PanelWindow {
         anchors.fill: parent
         color: "#111118"
 
-        RowLayout {
-            anchors {
-                fill: parent
-                leftMargin: 6
-                rightMargin: 6
-            }
+        MarginWrapperManager {
+            leftMargin: 6
+            rightMargin: 6
+        }
 
+        RowLayout {
             RowLayout {
                 Layout.alignment: Qt.AlignLeft
                 Layout.fillHeight: true
-                
+
                 Workspaces {
                     bar: bar
                 }

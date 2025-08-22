@@ -20,6 +20,8 @@ Rectangle {
         onTriggered: parent.hyprlandReady = true
     }
 
+    implicitHeight: 28
+
     MarginWrapperManager {
         margin: 3
     }
@@ -41,9 +43,9 @@ Rectangle {
                     topMargin: 3
                     bottomMargin: 3
                 }
+
                 color: isFocused ? "#449dab" : "transparent"
                 Text {
-                    anchors.centerIn: parent
                     color: parent.isFocused ? "#1A1B26" : "#a9b1d6"
                     text: parent.modelData.id
                     font.family: bar.fontFamily

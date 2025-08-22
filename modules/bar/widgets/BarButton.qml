@@ -1,7 +1,8 @@
 import QtQuick
 import QtQuick.Layouts
+import Quickshell.Widgets
 
-Rectangle {
+WrapperRectangle {
     id: root
     required property string text
     property bool clickable: true
@@ -16,44 +17,41 @@ Rectangle {
     border.color: "#232533"
     border.width: 1
 
-    implicitWidth: (textObj.visible ? textObj.implicitWidth : 0) + (iconObj.visible ? iconObj.implicitWidth : 0) + 32
-    implicitHeight: textObj.implicitHeight + 12
+    implicitHeight: 28
 
     signal clicked
 
-    RowLayout {
-        spacing: 0
-        anchors {
-            fill: parent
-            leftMargin: 16
-            rightMargin: 16
-        }
-
-        Text {
-            id: iconObj
-            visible: root.icon != ""
-            text: root.icon
-            font.pixelSize: 14
-            font.family: "Symbols Nerd Font"
-            color: "#449dab"
-        }
-
-        Text {
-            id: textObj
-            visible: root.text != ""
-            font.family: "monospace"
-            font.pixelSize: 14
-            color: "#a9b1d6"
-            text: (iconObj.visible ? " " : "") + root.text
-        }
-    }
-
-    MouseArea {
+    WrapperMouseArea {
         id: mouseArea
         anchors.fill: parent
         enabled: root.clickable
         hoverEnabled: true
         onClicked: root.clicked()
         cursorShape: root.clickable ? Qt.PointingHandCursor : Qt.ArrowCursor
+
+        leftMargin: 16
+        rightMargin: 16
+
+        RowLayout {
+            spacing: 0
+
+            Text {
+                id: iconObj
+                visible: root.icon != ""
+                text: root.icon
+                font.pixelSize: 14
+                font.family: "Symbols Nerd Font"
+                color: "#449dab"
+            }
+
+            Text {
+                id: textObj
+                visible: root.text != ""
+                font.family: "monospace"
+                font.pixelSize: 14
+                color: "#a9b1d6"
+                text: (iconObj.visible ? " " : "") + root.text
+            }
+        }
     }
 }
