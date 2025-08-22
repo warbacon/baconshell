@@ -15,7 +15,7 @@ Rectangle {
     RowLayout {
         id: layout
         anchors.fill: parent
-        anchors.margins: 6
+        anchors.margins: 5
 
         Repeater {
             id: workspaces

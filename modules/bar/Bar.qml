@@ -20,14 +20,12 @@ PanelWindow {
 
     implicitHeight: 36
 
-    Rectangle {
+    WrapperRectangle {
         anchors.fill: parent
         color: "#111118"
 
-        MarginWrapperManager {
-            leftMargin: 6
-            rightMargin: 6
-        }
+        rightMargin: 5
+        leftMargin: 5
 
         RowLayout {
             RowLayout {

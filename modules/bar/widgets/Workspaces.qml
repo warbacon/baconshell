@@ -3,12 +3,15 @@ import Quickshell.Widgets
 import QtQuick
 import QtQuick.Layouts
 
-Rectangle {
+WrapperRectangle {
     id: root
     property var bar
     color: "#1A1B26"
-    border.color: "#232533"
+
     radius: 6
+
+    border.color: "#232533"
+    border.width: 1
 
     property bool hyprlandReady: false
 
@@ -22,14 +25,12 @@ Rectangle {
 
     implicitHeight: 28
 
-    MarginWrapperManager {
-        margin: 3
-    }
+    margin: 2
 
     RowLayout {
         Repeater {
             model: Hyprland.workspaces
-            Rectangle {
+            WrapperRectangle {
                 required property HyprlandWorkspace modelData
                 readonly property bool isFocused: modelData == Hyprland.focusedWorkspace
 
@@ -37,15 +38,15 @@ Rectangle {
                 Layout.fillHeight: true
                 visible: root.hyprlandReady && (modelData.monitor == Hyprland.monitorFor(bar.screen))
 
-                MarginWrapperManager {
-                    leftMargin: 11
-                    rightMargin: 11
-                    topMargin: 3
-                    bottomMargin: 3
-                }
+                leftMargin: 10
+                rightMargin: 10
 
                 color: isFocused ? "#449dab" : "transparent"
+
                 Text {
+                    anchors.fill: parent
+                    horizontalAlignment: Text.AlignHCenter
+                    verticalAlignment: Text.AlignVCenter
                     color: parent.isFocused ? "#1A1B26" : "#a9b1d6"
                     text: parent.modelData.id
                     font.family: bar.fontFamily
