@@ -1,9 +1,8 @@
 import Quickshell
 import QtQuick
-import QtQuick.Layouts
+import qs.style
 
 BarButton {
-    Layout.alignment: Qt.AlignVCenter
     clickable: true
     icon: showTime ? "" : ""
 

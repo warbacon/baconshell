@@ -2,13 +2,12 @@ import Quickshell
 import Quickshell.Widgets
 import QtQuick
 import QtQuick.Layouts
+import qs.style
 import qs.modules.bar.widgets
 
 PanelWindow {
     id: bar
 
-    property string fontFamily: "monospace"
-    property int fontSize: 14
     property string position: "top"
 
     anchors {
@@ -22,7 +21,7 @@ PanelWindow {
 
     WrapperRectangle {
         anchors.fill: parent
-        color: "#111118"
+        color: Style.bg0
 
         rightMargin: 5
         leftMargin: 5

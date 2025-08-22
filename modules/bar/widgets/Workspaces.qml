@@ -2,15 +2,16 @@ import Quickshell.Hyprland
 import Quickshell.Widgets
 import QtQuick
 import QtQuick.Layouts
+import qs.style
 
 WrapperRectangle {
     id: root
     property var bar
-    color: "#1A1B26"
+    color: Style.bg1
 
     radius: 6
 
-    border.color: "#232533"
+    border.color: Style.border0
     border.width: 1
 
     property bool hyprlandReady: false
@@ -38,18 +39,18 @@ WrapperRectangle {
                 Layout.fillHeight: true
                 visible: root.hyprlandReady && (modelData.monitor == Hyprland.monitorFor(bar.screen))
 
-                leftMargin: 10
-                rightMargin: 10
+                leftMargin: 11
+                rightMargin: 11
 
-                color: isFocused ? "#449dab" : "transparent"
+                color: isFocused ? Style.workspace_active_bg : "transparent"
 
                 Text {
                     anchors.fill: parent
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
-                    color: parent.isFocused ? "#1A1B26" : "#a9b1d6"
+                    color: parent.isFocused ? Style.bg1 : Style.fg0
                     text: parent.modelData.id
-                    font.family: bar.fontFamily
+                    font.family: Style.fontFamily
                 }
             }
         }
