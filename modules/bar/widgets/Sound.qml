@@ -16,7 +16,7 @@ BarButton {
 
     Process {
         id: command
-        command: ["kitty", "-1", "pulsemixer"]
+        command: ["xdg-terminal-exec", "pulsemixer"]
     }
 
     onClicked: mouse => {
