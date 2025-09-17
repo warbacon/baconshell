@@ -33,6 +33,7 @@ ShellRoot {
                     readonly property string path: Quickshell.env("XDG_CONFIG_HOME") + "/background"
                     source: path + "?" + Date.now()
                     anchors.fill: parent
+                    cache: false
 
                     FileView {
                         path: image.path
