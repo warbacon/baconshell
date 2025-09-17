@@ -34,23 +34,33 @@ WrapperRectangle {
             WrapperRectangle {
                 required property HyprlandWorkspace modelData
                 readonly property bool isFocused: modelData == Hyprland.focusedWorkspace
+                readonly property bool isHovered: mouseArea.containsMouse
 
                 radius: 4
                 Layout.fillHeight: true
                 visible: root.hyprlandReady && (modelData.monitor == Hyprland.monitorFor(bar.screen))
-
                 leftMargin: 11
                 rightMargin: 11
 
-                color: isFocused ? Style.workspace_active_bg : "transparent"
+                color: isFocused ? Style.workspace_active_bg : isHovered ? Style.bg2 : "transparent"
 
                 Text {
                     anchors.fill: parent
                     horizontalAlignment: Text.AlignHCenter
                     verticalAlignment: Text.AlignVCenter
+
                     color: parent.isFocused ? Style.bg1 : Style.fg0
+
                     text: parent.modelData.id
                     font.family: Style.fontFamily
+
+                    MouseArea {
+                        id: mouseArea
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        cursorShape: Qt.PointingHandCursor
+                        onClicked: Hyprland.dispatch(`focusworkspaceoncurrentmonitor ${modelData.id}`)
+                    }
                 }
             }
         }
