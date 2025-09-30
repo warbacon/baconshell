@@ -1,7 +1,7 @@
 # 🥓 Baconshell
 
 > [!IMPORTANT]
-> Work in progress! Here be dragons!
+> **NOT** work in progress! Here be nothing!
 
 _A Hyprland shell made of bacon._
 
@@ -13,6 +13,10 @@ about `rofi`.
 
 Currently, it works only on Hyprland, but I might add support for Niri in the
 future.
+
+> [!NOTE]
+> As noted at the top, this is not being developed right now. Development will
+> resume once Quickshell is more stable and has more built-in services.
 
 ## Preview
 
