@@ -8,10 +8,9 @@ import qs.Modules.Notifications
 ShellRoot {
     id: shellRoot
 
-    // Notification daemon
-    NotificationDaemon {
-        id: notificationDaemon
-    }
+    NotificationsDaemon {}
+
+    IdleManager {}
 
     Variants {
         model: Quickshell.screens
@@ -21,7 +20,7 @@ ShellRoot {
 
             Bar {
                 screen: modelData
-                border: true
+                border: false
             }
 
             Background {

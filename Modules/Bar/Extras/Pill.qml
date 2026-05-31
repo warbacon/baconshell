@@ -13,6 +13,7 @@ WrapperMouseArea {
     property alias textColor: labelText.color
     property alias bgColor: rect.color
     property alias spacing: layout.spacing
+    property alias fontBold: labelText.font.bold
 
     default property alias content: layout.data
 
@@ -23,12 +24,7 @@ WrapperMouseArea {
         id: rect
 
         color: root.containsMouse && root.clickable ? Color.mSurfaceHighest : Color.mSurfaceHigh
-        radius: 99
-
-        border {
-            width: 1
-            color: Color.mOutline
-        }
+        radius: 8
 
         implicitHeight: 25
         rightMargin: 10

@@ -24,6 +24,7 @@ Row {
             onClicked: {
                 modelData.activate();
             }
+            fontBold: modelData.active
             text: modelData.name
             textColor: modelData.active ? Color.mOnPrimary : Color.mOnSurface
             bgColor: modelData.active ? Color.mPrimary : Color.mSurfaceHigh
