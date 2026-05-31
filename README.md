@@ -7,9 +7,9 @@ A lightweight shell designed for **niri**.
 - **Status bar** displaying essential system information.
 - **Wallpaper handling** automatically loads the image stored in
   `~/.config/background`, mirroring the behavior of GNOME.
-- **Notification daemon** - _work in progress_.
+- **Idle manager**
+- **Notification daemon**
 - **Polkit integration** - _work in progress_.
-- **Idle manager** - _work in progress_.
 - **Lock screen** - _work in progress_.
 
 ## Screenshot
