@@ -3,7 +3,12 @@ import Quickshell.WindowManager
 import qs.Modules.Bar.Extras
 import qs.Commons
 
-Row {
+Rectangle {
+    id: root
+
+    color: Color.mSurfaceHigh
+    radius: 8
+
     property var workspaces: {
         const arr = Array.from(WindowManager.windowsets).sort((a, b) => {
             return parseInt(a.name) - parseInt(b.name);
@@ -12,22 +17,28 @@ Row {
         return arr;
     }
 
-    spacing: 4
+    implicitHeight: row.implicitHeight
+    implicitWidth: row.implicitWidth
 
-    Repeater {
-        model: parent.workspaces
+    Row {
+        id: row
 
-        Pill {
-            required property Windowset modelData
+        anchors.fill: parent
+        spacing: 4
 
-            clickable: true
-            onClicked: {
-                modelData.activate();
+        Repeater {
+            model: root.workspaces
+
+            WorkspaceItem {
+                required property Windowset modelData
+
+                active: modelData.active
+                text: modelData.name
+
+                onClicked: {
+                    modelData.activate();
+                }
             }
-            fontBold: modelData.active
-            text: modelData.name
-            textColor: modelData.active ? Color.mOnPrimary : Color.mOnSurface
-            bgColor: modelData.active ? Color.mPrimary : Color.mSurfaceHigh
         }
     }
 }

@@ -12,8 +12,6 @@ WrapperMouseArea {
     property alias text: labelText.text
     property alias textColor: labelText.color
     property alias bgColor: rect.color
-    property alias spacing: layout.spacing
-    property alias fontBold: labelText.font.bold
 
     default property alias content: layout.data
 
@@ -32,7 +30,7 @@ WrapperMouseArea {
 
         RowLayout {
             id: layout
-            spacing: 7
+            spacing: 8
 
             Loader {
                 id: imageLoader

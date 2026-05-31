@@ -8,7 +8,6 @@ import qs.Modules.Bar.Extras
 Pill {
     id: pill
     visible: SystemTray.items.values.length > 0
-    spacing: 14
 
     Repeater {
         model: SystemTray.items

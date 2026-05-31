@@ -10,7 +10,6 @@ Pill {
     property var topLevel: ToplevelManager.activeToplevel
 
     visible: text !== ""
-    spacing: 10
 
     readonly property string socketPath: Quickshell.env("NIRI_SOCKET")
 
