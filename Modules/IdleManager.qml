@@ -1,38 +1,26 @@
 import Quickshell
-import Quickshell.Io
 import Quickshell.Wayland
 import QtQuick
+import qs.Services as Services
+import Quickshell.Io
 
 Scope {
     id: root
 
     property bool brightnessDimmed: false
-    property int brightnessBeforeIdle: -1
-
-    function currentBrightnessPercent() {
-        const current = parseInt(currentBrightness.text());
-        const max = parseInt(maxBrightness.text());
-
-        if (isNaN(current) || isNaN(max) || max <= 0) {
-            return -1;
-        }
-
-        return Math.round(current * 100 / max);
-    }
 
     function dimBrightness() {
         if (root.brightnessDimmed) {
             return;
         }
 
-        const currentPercent = root.currentBrightnessPercent();
+        const currentPercent = Services.Brightness.currentBrightnessPercent();
 
-        if (currentPercent < 10) {
+        if (currentPercent <= 10) {
             return;
         }
 
-        root.brightnessBeforeIdle = currentPercent;
-        brightnessctl.exec(["brightnessctl", "-q", "--save", "-d", "amdgpu_bl1", "set", "10%"]);
+        brightnessctl.exec(["brightnessctl", "-q", "--save", "set", "10%", "--device", Services.Brightness.backlightDevice]);
         root.brightnessDimmed = true;
     }
 
@@ -41,19 +29,29 @@ Scope {
             return;
         }
 
-        brightnessctl.exec(["brightnessctl", "-q", "--restore", "-d", "amdgpu_bl1"]);
+        brightnessctl.exec(["brightnessctl", "-q", "--restore", "--device", Services.Brightness.backlightDevice]);
         root.brightnessDimmed = false;
-        root.brightnessBeforeIdle = -1;
     }
 
     IdleMonitor {
         timeout: 60
+        enabled: Services.Brightness.available
 
         onIsIdleChanged: {
             if (isIdle) {
                 root.dimBrightness();
             } else {
                 root.restoreBrightness();
+            }
+        }
+    }
+
+    IdleMonitor {
+        timeout: 90
+
+        onIsIdleChanged: {
+            if (isIdle) {
+                powerOffMonitorsProcess.startDetached();
             }
         }
     }
@@ -69,22 +67,16 @@ Scope {
     }
 
     Process {
-        id: brightnessctl
-    }
-
-    Process {
         id: suspendProcess
         command: ["systemctl", "suspend"]
     }
 
-    FileView {
-        id: currentBrightness
-        watchChanges: true
-        path: "/sys/class/backlight/amdgpu_bl1/brightness"
+    Process {
+        id: powerOffMonitorsProcess
+        command: ["niri", "msg", "action", "power-off-monitors"]
     }
 
-    FileView {
-        id: maxBrightness
-        path: "/sys/class/backlight/amdgpu_bl1/max_brightness"
+    Process {
+        id: brightnessctl
     }
 }

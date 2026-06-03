@@ -1,11 +1,13 @@
 import QtQuick
-import Quickshell.Io
+import qs.Services as Services
 import qs.Modules.Bar.Extras
 
 Pill {
     id: root
 
-    property int brightnessLevel: Math.round(currentBrightness.text() * 100 / maxBrightness.text())
+    property int brightnessLevel: {
+        return Services.Brightness.currentBrightness < 0 ? 0 : Services.Brightness.currentBrightness;
+    }
 
     icon: {
         if (brightnessLevel > 50) {
@@ -19,33 +21,15 @@ Pill {
 
     text: `${brightnessLevel} %`
 
-    Process {
-        id: brightnessctl
-    }
-
     onWheel: wheel => {
-        const step = 4;
-
         if (wheel.angleDelta.y > 0) {
-            brightnessctl.exec(["brightnessctl", "-e4", "-n2", "set", `${step}%+`]);
+            Services.Brightness.setBrightness(4, "+");
         } else {
-            brightnessctl.exec(["brightnessctl", "-e4", "-n2", "set", `${step}%-`]);
+            Services.Brightness.setBrightness(4, "-");
         }
     }
 
     scrollGestureEnabled: true
 
-    FileView {
-        id: maxBrightness
-        path: "/sys/class/backlight/amdgpu_bl1/max_brightness"
-        onLoadFailed: root.visible = false
-    }
-
-    FileView {
-        id: currentBrightness
-        watchChanges: true
-        path: "/sys/class/backlight/amdgpu_bl1/brightness"
-        onFileChanged: this.reload()
-        onLoadFailed: root.visible = false
-    }
+    visible: Services.Brightness.available
 }
