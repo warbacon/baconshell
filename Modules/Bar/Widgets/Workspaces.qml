@@ -1,4 +1,5 @@
 import QtQuick
+import Quickshell
 import Quickshell.WindowManager
 import qs.Modules.Bar.Extras
 import qs.Commons
@@ -6,11 +7,13 @@ import qs.Commons
 Rectangle {
     id: root
 
+    required property ShellScreen screen
+
     color: Color.mSurfaceHigh
     radius: 8
 
     property var workspaces: {
-        const arr = Array.from(WindowManager.windowsets).sort((a, b) => {
+        const arr = Array.from(WindowManager.screenProjection(root.screen).windowsets).sort((a, b) => {
             return parseInt(a.name) - parseInt(b.name);
         });
 

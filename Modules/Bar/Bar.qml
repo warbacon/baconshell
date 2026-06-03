@@ -28,7 +28,9 @@ PanelWindow {
 
         RowLayout {
             RowLayout {
-                Workspaces {}
+                Workspaces {
+                    screen: bar.screen
+                }
                 WindowTitle {}
             }
             RowLayout {
