@@ -10,6 +10,25 @@ Singleton {
     property string backlightDevice: ""
     property bool available: false
 
+    function backlightPath(name) {
+        return root.backlightDevice === "" ? "" : `/sys/class/backlight/${root.backlightDevice}/${name}`;
+    }
+
+    function updateAvailability() {
+        root.available = root.backlightDevice !== "";
+    }
+
+    function setBacklightDevice(device) {
+        root.backlightDevice = device;
+        root.updateAvailability();
+    }
+
+    function parseBacklightDevice(output) {
+        const lines = output.split("\n").filter(line => line !== "");
+
+        return lines.length > 0 ? lines[0].split("/").pop() : "";
+    }
+
     readonly property int currentBrightness: {
         const current = parseInt(currentBrightnessFile.text());
         const max = parseInt(maxBrightnessFile.text());
@@ -19,10 +38,6 @@ Singleton {
         }
 
         return Math.round(current * 100 / max);
-    }
-
-    function refreshAvailability() {
-        root.available = root.backlightDevice !== "";
     }
 
     function currentBrightnessPercent() {
@@ -48,29 +63,21 @@ Singleton {
 
         stdout: StdioCollector {
             onStreamFinished: {
-                const lines = text.split("\n").filter(line => line !== "");
-
-                if (lines.length > 0) {
-                    root.backlightDevice = lines[0].split("/").pop();
-                } else {
-                    root.backlightDevice = "";
-                }
-
-                root.refreshAvailability();
+                root.setBacklightDevice(root.parseBacklightDevice(text));
             }
         }
     }
 
     FileView {
         id: maxBrightnessFile
-        path: root.backlightDevice === "" ? "" : `/sys/class/backlight/${root.backlightDevice}/max_brightness`
+        path: root.backlightPath("max_brightness")
         onLoadFailed: root.available = false
     }
 
     FileView {
         id: currentBrightnessFile
         watchChanges: true
-        path: root.backlightDevice === "" ? "" : `/sys/class/backlight/${root.backlightDevice}/brightness`
+        path: root.backlightPath("brightness")
         onFileChanged: this.reload()
         onLoadFailed: root.available = false
     }
