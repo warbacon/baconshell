@@ -33,21 +33,15 @@ Scope {
             right: true
         }
 
-        margins {
-            top: 8
-            right: 8
-        }
-
         exclusiveZone: 0
         color: "transparent"
 
-        implicitWidth: 320
+        implicitWidth: 320 + 16
         implicitHeight: notificationsColumn.implicitHeight
 
         Column {
             id: notificationsColumn
             width: parent.width
-            spacing: 8
 
             Repeater {
                 model: root.notifications
