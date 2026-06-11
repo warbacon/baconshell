@@ -3,8 +3,11 @@
 }:
 
 pkgs.mkShell {
+  name = "baconshell";
+
   packages = [
-    pkgs.kdePackages.qtdeclarative
+    pkgs.qt6Packages.qtdeclarative
+    pkgs.brightnessctl
     pkgs.libnotify
   ];
 
