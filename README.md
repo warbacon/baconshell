@@ -5,16 +5,16 @@ A lightweight shell designed for **niri**.
 ## Features
 
 - **Status bar** with essential system information
-- **Wallpaper handling** — automatically loads the image at
+- **Wallpaper handling:** automatically loads the image at
   `~/.config/background`, mirroring GNOME's behavior
 - **Idle manager** with Caffeine mode support
-- **Notification daemon** — functional, but limited (WhatsApp notifications are
-  broken)
+- **Notification daemon:** functional, but limited
 - **Polkit integration** _(work in progress)_
 - **Lock screen** _(work in progress)_
 
 ## Requirements
 
+- [quickshell](https://quickshell.org/) 0.3.0 or greater
 - [niri](https://github.com/YaLTeR/niri)
 - `upower` and `brightnessctl` _(laptop only)_
 - `libnotify` for sending internal notifications
