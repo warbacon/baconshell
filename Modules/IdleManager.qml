@@ -8,6 +8,11 @@ Scope {
     id: root
 
     property bool brightnessDimmed: false
+    property bool caffeineMode: false
+    onCaffeineModeChanged: {
+        console.log(`Caffeine Mode: ${root.caffeineMode ? "on" : "off"}`);
+        caffeineNotification.exec(["notify-send", "Modo cafeína", `${root.caffeineMode ? "Activado" : "Desactivado"}`]);
+    }
 
     function dimBrightness() {
         if (root.brightnessDimmed) {
@@ -33,9 +38,21 @@ Scope {
         root.brightnessDimmed = false;
     }
 
+    Process {
+        id: caffeineNotification
+    }
+
+    IpcHandler {
+        target: "caffeine"
+
+        function toggle() {
+            root.caffeineMode = !root.caffeineMode;
+        }
+    }
+
     IdleMonitor {
         timeout: 60
-        enabled: Services.Brightness.available
+        enabled: Services.Brightness.available && !root.caffeineMode
 
         onIsIdleChanged: {
             if (isIdle) {
@@ -47,6 +64,7 @@ Scope {
     }
 
     IdleMonitor {
+        enabled: !root.caffeineMode
         timeout: 90
 
         onIsIdleChanged: {
@@ -57,6 +75,7 @@ Scope {
     }
 
     IdleMonitor {
+        enabled: !root.caffeineMode
         timeout: 300
 
         onIsIdleChanged: {
