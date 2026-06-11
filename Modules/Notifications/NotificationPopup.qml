@@ -6,13 +6,18 @@ import qs.Commons
 
 Item {
     id: root
-    property var notification: null
-    signal dismissed
+    property Notification notification
 
     readonly property int shadowPadding: 16
 
     implicitWidth: 320 + shadowPadding
     implicitHeight: card.implicitHeight + shadowPadding
+
+    Timer {
+        interval: Math.abs(root.notification.expireTimeout)
+        running: root.notification.expireTimeout > 0
+        onTriggered: root.notification.expire()
+    }
 
     RectangularShadow {
         anchors.fill: card
@@ -33,13 +38,6 @@ Item {
         border {
             width: 2
             color: root.notification.urgency == NotificationUrgency.Critical ? Color.mError : Color.mPrimary
-        }
-
-        Connections {
-            target: root.notification
-            function onClosed() {
-                root.dismissed();
-            }
         }
 
         MouseArea {
