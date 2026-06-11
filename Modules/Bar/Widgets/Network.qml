@@ -15,9 +15,6 @@ Pill {
     textColor: isConnected ? Color.mOnSurface : Color.mOnSurfaceVariant
 
     icon: {
-        if (!isConnected)
-            return "󰌙";
-
         if (connectionType === "wifi") {
             if (signalStrength >= 80)
                 return "󰤨";
@@ -32,6 +29,8 @@ Pill {
         }
         if (connectionType === "ethernet")
             return "󰈀";
+
+        return "󰌙";
     }
 
     text: isConnected ? connectionName : "Sin conexión"
