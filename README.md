@@ -8,8 +8,8 @@ A lightweight shell designed for **niri**.
 - **Wallpaper handling:** automatically loads the image at
   `~/.config/background`, mirroring GNOME's behavior
 - **Idle manager** with Caffeine mode support
+- **Polkit agent**
 - **Notification daemon:** functional, but limited
-- **Polkit integration** _(work in progress)_
 - **Lock screen** _(work in progress)_
 
 ## Requirements
