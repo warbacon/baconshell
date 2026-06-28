@@ -6,25 +6,24 @@ import qs.Modules.Bar
 import qs.Modules.Notifications
 
 ShellRoot {
-    id: shellRoot
-
     NotificationsDaemon {}
-
     IdleManager {}
+    Polkit {}
+    // VolumeOSD {}
 
     Variants {
         model: Quickshell.screens
 
-        delegate: Item {
+        Scope {
+            id: scope
             required property ShellScreen modelData
 
             Bar {
-                screen: modelData
-                border: false
+                screen: scope.modelData
             }
 
             Background {
-                screen: modelData
+                screen: scope.modelData
             }
         }
     }

@@ -6,7 +6,7 @@ import qs.Commons
 import qs.Modules.Bar.Widgets
 
 PanelWindow {
-    id: bar
+    id: root
     property alias border: border.visible
 
     anchors {
@@ -29,13 +29,14 @@ PanelWindow {
         RowLayout {
             RowLayout {
                 Workspaces {
-                    screen: bar.screen
+                    screen: root.screen
                 }
                 WindowTitle {}
             }
             RowLayout {
                 Layout.alignment: Qt.AlignRight
                 SystemTray {}
+                Player {}
                 Sound {}
                 Brightness {}
                 Battery {}

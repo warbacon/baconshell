@@ -32,6 +32,8 @@ Pill {
         }
         if (connectionType === "ethernet")
             return "󰈀";
+
+        return "󰌙";
     }
 
     text: isConnected ? connectionName : "Sin conexión"

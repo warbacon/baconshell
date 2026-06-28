@@ -34,7 +34,7 @@ Scope {
             width: parent.width
 
             Repeater {
-                model: notificationServer.trackedNotifications
+                model: notificationServer.trackedNotifications.values.slice().reverse()
 
                 NotificationPopup {
                     required property var modelData

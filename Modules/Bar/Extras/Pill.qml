@@ -2,11 +2,13 @@ import Quickshell.Widgets
 import QtQuick
 import QtQuick.Layouts
 import qs.Commons
+import qs.Components
 
 WrapperMouseArea {
     id: root
 
     property bool clickable: false
+    property bool hasImage: icon.startsWith("image://")
     property string icon: ""
     property alias iconColor: iconText.color
     property alias text: labelText.text
@@ -33,30 +35,25 @@ WrapperMouseArea {
             spacing: 8
 
             Loader {
-                id: imageLoader
-                visible: root.icon.startsWith("image://")
-                active: root.icon.startsWith("image://")
+                active: root.hasImage
+                visible: root.hasImage
                 sourceComponent: IconImage {
                     source: root.icon
                     implicitSize: 16
                 }
             }
 
-            Text {
+            StyledText {
                 id: iconText
-                visible: root.icon != "" && !root.icon.startsWith("image://")
+                visible: root.icon != "" && !root.hasImage
                 text: root.icon
                 color: Color.mPrimary
                 font.family: "Symbols Nerd Font"
-                font.pointSize: Style.fontSize
             }
 
-            Text {
+            StyledText {
                 id: labelText
                 visible: text != ""
-                color: Color.mOnSurface
-                font.family: Style.fontFamily
-                font.pointSize: Style.fontSize
             }
         }
     }

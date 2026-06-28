@@ -1,6 +1,7 @@
 import QtQuick
 import Quickshell.Widgets
 import qs.Commons
+import qs.Components
 
 WrapperMouseArea {
     id: root
@@ -18,17 +19,15 @@ WrapperMouseArea {
         id: rect
 
         anchors.fill: parent
-        radius: 8
+        anchors.margins: 2
+        radius: 6
         color: root.active ? Color.mPrimary : root.containsMouse ? Color.mSurfaceHighest : Color.mSurfaceHigh
 
-        Text {
+        StyledText {
             id: label
-
             anchors.centerIn: parent
             color: root.active ? Color.mOnPrimary : Color.mOnSurface
             font.bold: root.active
-            font.family: Style.fontFamily
-            font.pointSize: Style.fontSize
         }
     }
 }

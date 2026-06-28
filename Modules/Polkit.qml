@@ -8,7 +8,7 @@ import Quickshell.Services.Polkit
 import qs.Commons
 import qs.Components
 
-Item {
+Scope {
     id: root
 
     PolkitAgent {
@@ -89,6 +89,8 @@ Item {
 
                                 padding: 10
                                 font.family: Style.fontFamily
+                                font.pointSize: Style.fontSize + 2
+                                font.letterSpacing: 4
                                 color: Color.mOnSurface
 
                                 background: Rectangle {

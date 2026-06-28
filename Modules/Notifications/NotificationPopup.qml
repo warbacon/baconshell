@@ -42,7 +42,7 @@ Item {
 
         MouseArea {
             anchors.fill: parent
-            cursorShape: Qt.PointingHandCursor
+            cursorShape: root.notification.actions.length > 0 && Qt.PointingHandCursor
             acceptedButtons: Qt.LeftButton | Qt.MiddleButton
             function invokeDefaultAction() {
                 if (!root.notification)

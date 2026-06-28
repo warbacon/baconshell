@@ -4,6 +4,7 @@ import Quickshell
 import QtQuick
 
 PanelWindow {
+    id: root
     WlrLayershell.layer: WlrLayer.Background
     WlrLayershell.exclusionMode: ExclusionMode.Ignore
     WlrLayershell.namespace: "shell:background"
@@ -21,6 +22,8 @@ PanelWindow {
         id: image
         readonly property string path: Quickshell.env("HOME") + "/.config/background"
         source: path + "?" + Date.now()
+        sourceSize.width: root.screen.width
+        sourceSize.height: root.screen.height
         anchors.fill: parent
         fillMode: Image.PreserveAspectCrop
         asynchronous: true
