@@ -1,6 +1,7 @@
 import QtQuick
 
 import Quickshell
+import QtQuick.Layouts
 import Quickshell.Services.Notifications
 
 Scope {
@@ -16,6 +17,7 @@ Scope {
     }
 
     PanelWindow {
+        id: window
         visible: notificationServer.trackedNotifications.values.length > 0
 
         anchors {
@@ -23,15 +25,15 @@ Scope {
             right: true
         }
 
-        exclusiveZone: 0
         color: "transparent"
 
-        implicitWidth: 320 + 16
+        implicitWidth: 350
         implicitHeight: notificationsColumn.implicitHeight
 
-        Column {
+        ColumnLayout {
             id: notificationsColumn
             width: parent.width
+            spacing: 0
 
             Repeater {
                 model: notificationServer.trackedNotifications.values.slice().reverse()
@@ -39,6 +41,7 @@ Scope {
                 NotificationPopup {
                     required property var modelData
                     notification: modelData
+                    Layout.fillWidth: true
                 }
             }
         }

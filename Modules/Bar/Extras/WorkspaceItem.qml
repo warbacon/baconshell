@@ -1,7 +1,7 @@
 import QtQuick
 import Quickshell.Widgets
 import qs.Commons
-import qs.Components
+import qs.Widgets
 
 WrapperMouseArea {
     id: root

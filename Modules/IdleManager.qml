@@ -9,6 +9,7 @@ Scope {
 
     property bool brightnessDimmed: false
     property bool caffeineMode: false
+
     onCaffeineModeChanged: {
         console.log(`Caffeine Mode: ${root.caffeineMode ? "on" : "off"}`);
         caffeineNotification.exec(["notify-send", "Modo cafeína", `${root.caffeineMode ? "Activado" : "Desactivado"}`, "-t", "3000"]);

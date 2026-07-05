@@ -1,8 +1,9 @@
+pragma ComponentBehavior: Bound
 import Quickshell.Widgets
 import QtQuick
 import QtQuick.Layouts
 import qs.Commons
-import qs.Components
+import qs.Widgets
 
 WrapperMouseArea {
     id: root

@@ -6,7 +6,7 @@ import Quickshell.Widgets
 import Quickshell.Wayland
 import Quickshell.Services.Polkit
 import qs.Commons
-import qs.Components
+import qs.Widgets
 
 Scope {
     id: root

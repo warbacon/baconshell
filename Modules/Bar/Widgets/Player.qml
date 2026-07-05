@@ -3,7 +3,7 @@ import QtQuick.Layouts
 import Quickshell.Widgets
 import Quickshell.Services.Mpris
 import qs.Commons
-import qs.Components
+import qs.Widgets
 
 WrapperRectangle {
     id: root

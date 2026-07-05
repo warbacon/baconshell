@@ -2,15 +2,25 @@ import QtQuick
 import QtQuick.Layouts
 import QtQuick.Effects
 import Quickshell.Services.Notifications
+import qs.Widgets
 import qs.Commons
 
 Item {
     id: root
-    property Notification notification
+
+    required property Notification notification
 
     readonly property int shadowPadding: 16
+    readonly property int cardRadius: 10
+    readonly property int cardPadding: 12
+    readonly property int avatarSize: 64
+    readonly property int borderWidth: 2
 
-    implicitWidth: 320 + shadowPadding
+    readonly property bool isCritical: notification.urgency === NotificationUrgency.Critical
+    readonly property bool hasImage: notification.image !== ""
+    readonly property bool hasBody: notification.body !== ""
+    readonly property bool hasActions: notification.actions.length > 0
+
     implicitHeight: card.implicitHeight + shadowPadding
 
     Timer {
@@ -30,82 +40,72 @@ Item {
 
     Rectangle {
         id: card
+
         anchors.centerIn: parent
         width: root.width - root.shadowPadding
-        implicitHeight: content.implicitHeight + 24
+        implicitHeight: content.implicitHeight + root.cardPadding * 2
         color: Color.mSurfaceHighest
-        radius: 10
-        border {
-            width: 2
-            color: root.notification.urgency == NotificationUrgency.Critical ? Color.mError : Color.mPrimary
-        }
+        radius: root.cardRadius
+        border.width: root.borderWidth
+        border.color: root.isCritical ? Color.mError : Color.mPrimary
 
         MouseArea {
             anchors.fill: parent
-            cursorShape: root.notification.actions.length > 0 && Qt.PointingHandCursor
+            cursorShape: root.hasActions ? Qt.PointingHandCursor : Qt.ArrowCursor
             acceptedButtons: Qt.LeftButton | Qt.MiddleButton
-            function invokeDefaultAction() {
-                if (!root.notification)
-                    return;
-                for (let i = 0; i < root.notification.actions.length; ++i) {
-                    const action = root.notification.actions[i];
-                    if (action.identifier === "default") {
-                        action.invoke();
-                        return;
-                    }
-                }
-                root.notification.dismiss();
-            }
-            onClicked: function (mouse) {
-                if (!root.notification)
-                    return;
+
+            onClicked: mouse => {
                 if (mouse.button === Qt.MiddleButton) {
                     root.notification.dismiss();
                     return;
                 }
-                invokeDefaultAction();
+
+                const defaultAction = root.notification.actions.find(a => a.identifier === "default");
+                if (defaultAction)
+                    defaultAction.invoke();
+                else
+                    root.notification.dismiss();
             }
         }
 
         RowLayout {
             id: content
+
             anchors.fill: parent
-            anchors.margins: 12
+            anchors.margins: root.cardPadding
             spacing: 10
 
             Rectangle {
-                visible: root.notification.image
-                implicitWidth: 64
-                implicitHeight: 64
+                visible: root.hasImage
+                Layout.preferredWidth: root.avatarSize
+                Layout.preferredHeight: root.avatarSize
                 color: "transparent"
 
                 Image {
                     anchors.fill: parent
-                    source: root.notification.image
+                    source: root.hasImage ? root.notification.image : ""
                     fillMode: Image.PreserveAspectCrop
                 }
             }
 
             ColumnLayout {
                 Layout.fillWidth: true
-                Text {
+                spacing: 4
+
+                StyledText {
                     Layout.fillWidth: true
-                    text: root.notification ? root.notification.summary : ""
+                    text: root.notification.summary
                     textFormat: Text.PlainText
-                    color: Color.mOnSurface
-                    font.family: Style.fontFamily
-                    font.pointSize: 11
+                    font.pointSize: 12
                     font.bold: true
                     elide: Text.ElideRight
                 }
-                Text {
+
+                StyledText {
                     Layout.fillWidth: true
-                    visible: root.notification && root.notification.body !== ""
-                    text: root.notification ? root.notification.body : ""
-                    font.family: Style.fontFamily
-                    font.pointSize: 10
+                    visible: root.hasBody
+                    text: root.notification.body
                     textFormat: Text.PlainText
-                    color: Color.mOnSurface
                     wrapMode: Text.WordWrap
                 }
             }
