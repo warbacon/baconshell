@@ -7,6 +7,8 @@ import QtQuick
 Singleton {
     id: root
 
+    signal brightnessChanged
+
     property string backlightDevice: ""
     property bool available: false
 
@@ -78,7 +80,10 @@ Singleton {
         id: currentBrightnessFile
         watchChanges: true
         path: root.backlightPath("brightness")
-        onFileChanged: this.reload()
+        onFileChanged: {
+            this.reload();
+            root.brightnessChanged();
+        }
         onLoadFailed: root.available = false
     }
 }
