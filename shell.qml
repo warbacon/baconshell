@@ -9,7 +9,7 @@ ShellRoot {
     NotificationsDaemon {}
     IdleManager {}
     Polkit {}
-    // VolumeOSD {}
+    VolumeOSD {}
 
     Variants {
         model: Quickshell.screens
