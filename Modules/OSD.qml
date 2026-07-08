@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Layouts
 import Quickshell
 import Quickshell.Services.Pipewire
 import Quickshell.Widgets
@@ -8,20 +9,18 @@ import qs.Services as Services
 Scope {
     id: root
 
-    enum Type { None, Volume, Brightness }
+    readonly property int typeNone: 0
+    readonly property int typeVolume: 1
+    readonly property int typeBrightness: 2
 
-    property int currentType: root.Type.None
+    property int currentType: root.typeNone
     property bool showOsd: false
-
-    PwObjectTracker {
-        objects: [Pipewire.defaultAudioSink]
-    }
 
     Connections {
         target: Pipewire.defaultAudioSink?.audio
 
         function onVolumeChanged() {
-            root.currentType = root.Type.Volume;
+            root.currentType = root.typeVolume;
             root.showOsd = true;
             hideTimer.restart();
         }
@@ -35,7 +34,7 @@ Scope {
         target: Services.Brightness
 
         function onBrightnessChanged() {
-            root.currentType = root.Type.Brightness;
+            root.currentType = root.typeBrightness;
             root.showOsd = true;
             hideTimer.restart();
         }
@@ -46,51 +45,50 @@ Scope {
         interval: 1500
         onTriggered: {
             root.showOsd = false;
-            root.currentType = root.Type.None;
+            root.currentType = root.typeNone;
         }
     }
 
-    PanelWindow {
-        anchors.centerIn: parent
+    LazyLoader {
+        active: root.showOsd
 
-        exclusiveZone: 0
-        color: "transparent"
-        mask: Region {}
+        PanelWindow {
+            exclusiveZone: 0
+            color: "transparent"
 
-        anchors.bottom: parent.bottom
-        anchors.bottomMargin: 40
+            mask: Region {}
 
-        visible: root.showOsd
+            anchors.bottom: true
+            margins.bottom: screen.height / 12
 
-        width: 250
-        height: 50
+            visible: root.showOsd
 
-        Rectangle {
-            anchors.fill: parent
-            radius: 8
-            color: Color.mSurface
-            border.color: Color.mOutline
+            implicitWidth: 250
+            implicitHeight: 60
 
-            ColumnLayout {
-                anchors {
-                    fill: parent
-                    margins: 12
-                }
-                spacing: 4
+            Rectangle {
+                anchors.fill: parent
+                radius: 8
+                color: Color.mSurface
+                border.color: Color.mOutline
 
                 RowLayout {
-                    Layout.fillWidth: true
+                    anchors {
+                        fill: parent
+                        margins: 12
+                    }
+                    spacing: 8
 
                     IconImage {
                         implicitSize: 30
                         source: {
-                            if (root.currentType === root.Type.Volume) {
+                            if (root.currentType === root.typeVolume) {
                                 const isMuted = Pipewire.defaultAudioSink?.audio.muted;
-                                return isMuted
-                                    ? Quickshell.iconPath("audio-volume-muted-symbolic")
-                                    : Quickshell.iconPath("audio-volume-high-symbolic");
+                                return isMuted ? Quickshell.iconPath("audio-volume-muted-symbolic") : Quickshell.iconPath("audio-volume-high-symbolic");
                             }
-                            return Quickshell.iconPath("display-brightness-symbolic");
+                            if (root.currentType === root.typeBrightness) {
+                                return Quickshell.iconPath("video-display-brightness-symbolic");
+                            }
                         }
                     }
 
@@ -109,32 +107,18 @@ Scope {
                                 bottom: parent.bottom
                             }
 
-                            width: parent.width * Math.max(0, Math.min(1, {
-                                if (root.currentType === root.Type.Volume) {
-                                    return Pipewire.defaultAudioSink?.audio.volume ?? 0;
+                            implicitWidth: {
+                                if (root.currentType === root.typeVolume) {
+                                    return parent.width * (Pipewire.defaultAudioSink?.audio.volume ?? 0);
                                 }
-                                return Services.Brightness.available
-                                    ? Services.Brightness.currentBrightness / 100
-                                    : 0;
-                            }))
+
+                                if (root.currentType === root.typeBrightness) {
+                                    return parent.width * (Services.Brightness.currentBrightness / 100);
+                                }
+                            }
                             radius: parent.radius
                         }
                     }
-                }
-
-                StyledText {
-                    Layout.alignment: Qt.AlignHCenter
-                    text: {
-                        if (root.currentType === root.Type.Volume) {
-                            const vol = Math.round((Pipewire.defaultAudioSink?.audio.volume ?? 0) * 100);
-                            const muted = Pipewire.defaultAudioSink?.audio.muted;
-                            return muted ? `${vol}% (muted)` : `${vol}%`;
-                        }
-                        return Services.Brightness.available
-                            ? `${Services.Brightness.currentBrightness}%`
-                            : "";
-                    }
-                    color: Color.mOnSurfaceVariant
                 }
             }
         }
